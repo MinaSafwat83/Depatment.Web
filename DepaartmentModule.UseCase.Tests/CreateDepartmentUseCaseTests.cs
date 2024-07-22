@@ -8,6 +8,8 @@ using DepartmentModule.UseCase.Departments;
 using DepartmentModule.UseCase.Departments.Interfaces;
 using DepartmentModule.UseCase.DTOs;
 using DepartmentModule.UseCase.PluginInterface;
+using Newtonsoft.Json.Linq;
+using System.Reflection.Metadata;
 
 namespace DepartmentModule.Tests.UseCase.Departments
 {
@@ -26,7 +28,10 @@ namespace DepartmentModule.Tests.UseCase.Departments
         public async Task ExecuteAsync_WithNullCreateDepDTO_ThrowsArgumentNullException()
         {
             // Act & Assert
-            await Assert.ThrowsAsync<ArgumentNullException>(() => _createDepartmentUseCase.ExecuteAsync(null));
+           var exception= await Assert.ThrowsAsync<ArgumentNullException>(() => _createDepartmentUseCase.ExecuteAsync(null));
+            Assert.Equal("Value cannot be null. (Parameter 'createDepDTO')", exception.Message);
+
+           
         }
 
         [Fact]
