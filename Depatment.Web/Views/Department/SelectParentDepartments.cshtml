@@ -1,0 +1,70 @@
+﻿@model IEnumerable<DepartmentDTO>
+
+<h1>Select Department for Sub-Departments</h1>
+
+<select id="topLevelDepartment" class="form-control" onchange="loadSubDepartments(this.value, 0)">
+    <option value="">Please select a department</option>
+    @foreach (var dept in Model)
+    {
+        <option value="@dept.Id">@dept.Name</option>
+    }
+</select>
+
+<div id="departmentsContainer"></div>
+
+
+
+@section Scripts {
+    <script>
+        function loadSubDepartments(parentId, level) {
+            if (!parentId) {
+                return;
+            }
+
+            // Remove all dropdowns at lower levels to reset the sub-department chain
+            let currentLevel = level + 1;
+            while (document.getElementById(`subDepartmentContainer-${currentLevel}`)) {
+                document.getElementById(`subDepartmentContainer-${currentLevel}`).remove();
+                currentLevel++;
+            }
+
+            // Create a new container for the next level dropdown
+            const nextLevel = level + 1;
+            const container = document.createElement('div');
+            container.id = `subDepartmentContainer-${nextLevel}`;
+            document.getElementById('departmentsContainer').appendChild(container);
+
+            const url = `/Departments/GetSubDepartments?parentId=${parentId}`;
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok. Status: ' + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.length > 0) {
+                        const select = document.createElement('select');
+                        select.className = 'form-control';
+                        select.id = `subDepartmentDropdown-${nextLevel}`;
+                        select.onchange = () => loadSubDepartments(select.value, nextLevel);
+                        select.innerHTML = `<option value="">Select a sub-department</option>`;
+                        data.forEach(d => {
+                            select.innerHTML += `<option value="${d.id}">${d.name}</option>`;
+                        });
+                        container.appendChild(select);
+                    } else {
+                        container.innerHTML = '<p>No more sub-departments available.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data: ', error);
+                    container.innerHTML = '<p>Error loading data</p>';
+                });
+        }
+
+
+    </script>
+}
+
+

@@ -1,0 +1,16 @@
+﻿@model IEnumerable<DepartmentModule.Core.Model.Department>
+
+@{
+    ViewData["Title"] = "Sub-Departments List";
+}
+
+<h1>Sub-Departments List</h1>
+
+<ul>
+    @foreach (var dept in Model)
+    {
+        <li>@dept.Name</li>
+    }
+</ul>
+
+

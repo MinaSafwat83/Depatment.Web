@@ -1,0 +1,48 @@
+﻿@model IEnumerable<DepartmentDTO>
+
+<h1>Departments</h1>
+
+<button onclick="window.location.href='@Url.Action("Create", "Departments")'">Add Root Department</button>
+
+<ul>
+    @foreach (var department in Model)
+    {
+        var detailsUrl = Url.Action("Details", "Departments", new { id = department.Id });
+        <li>
+            @department.Name
+            <button onclick="addSubDepartment(@department.Id)">Add Sub-Department</button>
+            <a href="@detailsUrl" class="btn btn-info">View Details</a>
+            @if (department.SubDepartments.Any())
+            {
+                @Html.Raw(RenderTree(department, detailsUrl))
+            }
+        </li>
+    }
+</ul>
+
+@section Scripts {
+    <script>
+        function addSubDepartment(parentId) {
+            window.location.href = '@Url.Action("Create", "Departments")' + '?parentId=' + parentId;
+        }
+    </script>
+}
+
+@{
+    string RenderTree(DepartmentDTO department, string parentDetailsUrl)
+    {
+        var html = "<ul>";
+        foreach (var sub in department.SubDepartments)
+        {
+            var subDetailsUrl = Url.Action("Details", "Departments", new { id = sub.Id });
+            html += $"<li>{sub.Name} <button onclick='addSubDepartment({sub.Id})'>Add Sub-Department</button> <a href='{subDetailsUrl}' class='btn btn-info'>View Details</a>";
+            if (sub.SubDepartments.Any())
+            {
+                html += RenderTree(sub, subDetailsUrl);  
+            }
+            html += "</li>";
+        }
+        html += "</ul>";
+        return html;
+    }
+}

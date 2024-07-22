@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Reminder>
+
+<h1>Reminders</h1>
+
+<p>
+    <a href="/Reminders/Create">Create New Reminder</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Date-Time</th>
+            <th>Sent</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reminder in Model)
+        {
+            <tr>
+                <td>@reminder.Title</td>
+                <td>@reminder.ReminderDateTime</td>
+                <td>@reminder.IsSent</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+

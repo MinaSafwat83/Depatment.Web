@@ -1,0 +1,25 @@
+﻿@model (CreateDepDTOForView SelectedDepartment, IEnumerable<Department> Parents)
+
+@{
+    ViewData["Title"] = "Parent Departments List";
+}
+
+<h1>Parent Departments List</h1>
+
+<h2>Selected Department: @Model.SelectedDepartment.Name</h2>
+
+@if (Model.Parents.Any())
+{
+    <ul>
+        @foreach (var dept in Model.Parents.Reverse())  
+        {
+            <li>@dept.Name</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No parent departments found, or selected department is a top-level department.</p>
+}
+
+<a href="@Url.Action("ParentDepartments", "Department")" class="btn btn-primary">Go Back</a>

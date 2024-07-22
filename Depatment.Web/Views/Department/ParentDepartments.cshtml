@@ -1,0 +1,39 @@
+﻿@model IEnumerable<DepartmentDTO>
+
+@{
+    ViewData["Title"] = "Select Department";
+}
+
+<h1>Select Department to View Parents</h1>
+
+<form asp-action="ParentDepartments" method="post">
+    <div class="form-group">
+        <label for="departmentId">Select Department:</label>
+        <select name="id" id="departmentId" class="form-control">
+            <option value="">Choose Department to Get Its Parents</option>
+            @foreach (var dept in Model)
+            {
+                <option value="@dept.Id">@dept.Name</option>
+            }
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">View Parent Departments</button>
+</form>
+
+@section Scripts {
+    <script>
+        document.getElementById('departmentId').addEventListener('change', function () {
+            var submitButton = document.querySelector('button[type="submit"]');
+            submitButton.disabled = !this.value;
+        });
+
+        document.querySelector('form').addEventListener('submit', function (e) {
+            var departmentId = document.getElementById('departmentId').value;
+            if (!departmentId) {
+                e.preventDefault(); // Prevent form submission
+                alert('Please choose a department to view its parents.');
+            }
+        });
+    </script>
+}
+

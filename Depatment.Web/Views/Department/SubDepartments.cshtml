@@ -1,0 +1,15 @@
+﻿@{
+    ViewData["Title"] = "Select Department for Sub-Departments";
+}
+
+<h1>Select Department for Sub-Departments</h1>
+
+<form asp-action="SubDepartments" method="post">
+    <div class="form-group">
+        <label for="departmentId">Department ID:</label>
+        <input type="number" name="id" class="form-control" id="departmentId" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Show Sub-Departments</button>
+</form>
+
+
