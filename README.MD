@@ -1,5 +1,8 @@
 Department/SubDepartment Tree and Reminder Task
 
+//To Run the application, you have to adjust the AppSetting.Json file to point to your database and to Run the Update-database command to add the migration to your database
+
+Notes:
 
 Clean Architecture Design
 
